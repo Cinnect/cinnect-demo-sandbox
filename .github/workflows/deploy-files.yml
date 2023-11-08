@@ -1,0 +1,23 @@
+name: Deploy Pages to demo.sandbox.cinnect.io
+on: 
+  workflow_dispatch:
+  push:
+    branches:
+      - gh-pages
+jobs:
+  FTP-Deploy-Action:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Move Pages to demo sandbox
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: 📂 Sync folders and files to the server
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_FOLDER }}
